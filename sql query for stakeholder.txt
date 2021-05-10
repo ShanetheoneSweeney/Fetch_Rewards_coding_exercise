@@ -1,0 +1,15 @@
+CREATE VIEW totalAccept as
+SELECT SUM(quantityPurchased) as totalAccepted
+FROM Receipts as R, ItemList as I
+WHERE R.R_id = I.R_id AND R.rewardsReceiptStatus = 'ACCEPTED'
+
+CREATE VIEW totalReject as
+SELECT SUM(quantityPurchased) as totalRejected
+FROM Receipts as R, ItemList as I
+WHERE R.R_id = I.R_id AND R.rewardsReceiptStatus = 'REJECTED'
+
+UPDATE totalAccept
+SET totalRejected = totalReject.totalRejected
+FROM totalReject
+
+(then look at the totalAccept View that has been updated to see which total is greater)
